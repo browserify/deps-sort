@@ -15,10 +15,10 @@ module.exports = function (opts) {
         if (opts.index) {
             var index = {};
             rows.forEach(function (row, ix) {
-                row.index = ix;
-                index[row.id] = ix;
+                row.index = ix + 1;
+                index[row.id] = ix + 1;
             });
-            rows.forEach(function (row, ix) {
+            rows.forEach(function (row) {
                 row.indexDeps = {};
                 Object.keys(row.deps).forEach(function (key) {
                     row.indexDeps[key] = index[row.deps[key]];
