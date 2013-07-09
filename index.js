@@ -10,9 +10,27 @@ module.exports = function (opts) {
     
     function end () {
         var tr = this;
-        rows.sort(cmp).forEach(function (row) {
-            tr.queue(row);
-        });
+        rows.sort(cmp);
+        
+        if (opts.index) {
+            var index = {};
+            rows.forEach(function (row, ix) {
+                row.index = ix;
+                index[row.id] = ix;
+            });
+            rows.forEach(function (row, ix) {
+                row.indexDeps = {};
+                Object.keys(row.deps).forEach(function (key) {
+                    row.indexDeps[key] = index[row.deps[key]];
+                });
+                tr.queue(row);
+            });
+        }
+        else {
+            rows.forEach(function (row) {
+                tr.queue(row);
+            });
+        }
         tr.queue(null);
     }
     
