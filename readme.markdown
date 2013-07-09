@@ -47,11 +47,17 @@ process.stdin.pipe(parse).pipe(sort).pipe(stringify).pipe(process.stdout);
 var depsSort = require('deps-sort');
 ```
 
-## var stream = depsSort()
+## var stream = depsSort(opts)
 
 Return a new through `stream` that should get written
 [module-deps](https://npmjs.org/package/module-deps) objects and will output
 sorted objects.
+
+`opts` can be:
+
+* `opts.index` - when true, for each module-deps row, insert `row.index` with
+the numeric index and `row.indexDeps` like `row.deps` but mapping require
+strings to row indices
 
 # install
 
