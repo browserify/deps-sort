@@ -1,6 +1,8 @@
 var through = require('through');
 
-module.exports = function () {
+module.exports = function (opts) {
+    if (!opts) opts = {};
+    
     var rows = [];
     return through(write, end);
     
