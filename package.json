@@ -1,6 +1,6 @@
 {
     "name": "deps-sort",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "sort module-deps output for deterministic browserify bundles",
     "main": "index.js",
     "bin": {
