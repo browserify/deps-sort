@@ -2,16 +2,16 @@ var through = require('through');
 
 module.exports = function (opts) {
     if (!opts) opts = {};
-    
+
     var rows = [];
     return through(write, end);
-    
+
     function write (row) { rows.push(row) }
-    
+
     function end () {
         var tr = this;
         rows.sort(cmp);
-        
+
         if (opts.index) {
             var index = {};
             rows.forEach(function (row, ix) {
@@ -33,7 +33,7 @@ module.exports = function (opts) {
         }
         tr.queue(null);
     }
-    
+
     function cmp (a, b) {
         return a.id + a.hash < b.id + b.hash ? -1 : 1;
     }
