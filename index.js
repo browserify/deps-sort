@@ -1,12 +1,12 @@
-var through = require('through');
+var through = require('through2');
 
 module.exports = function (opts) {
     if (!opts) opts = {};
     
     var rows = [];
-    return through(write, end);
+    return through.obj(write, end);
     
-    function write (row) { rows.push(row) }
+    function write (row, enc, next) { rows.push(row); next() }
     
     function end () {
         var tr = this;
@@ -23,15 +23,15 @@ module.exports = function (opts) {
                 Object.keys(row.deps).forEach(function (key) {
                     row.indexDeps[key] = index[row.deps[key]];
                 });
-                tr.queue(row);
+                tr.push(row);
             });
         }
         else {
             rows.forEach(function (row) {
-                tr.queue(row);
+                tr.push(row);
             });
         }
-        tr.queue(null);
+        tr.push(null);
     }
     
     function cmp (a, b) {
