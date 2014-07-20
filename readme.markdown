@@ -3,6 +3,8 @@
 sort [module-deps](https://npmjs.org/package/module-deps) output for deterministic
 browserify bundles
 
+[![build status](https://secure.travis-ci.org/substack/deps-sort.png)](http://travis-ci.org/substack/deps-sort)
+
 # example
 
 ## command-line
