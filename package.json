@@ -1,22 +1,21 @@
 {
   "name": "deps-sort",
-  "version": "0.1.2",
+  "version": "1.0.0",
   "description": "sort module-deps output for deterministic browserify bundles",
   "main": "index.js",
   "bin": {
     "deps-sort": "bin/cmd.js"
   },
   "dependencies": {
-    "JSONStream": "~0.6.4",
-    "minimist": "~0.0.1",
+    "JSONStream": "~0.8.4",
+    "minimist": "~0.2.0",
     "through2": "~0.5.1"
   },
   "devDependencies": {
-    "tap": "~0.4.0",
     "tape": "^2.13.4"
   },
   "scripts": {
-    "test": "tap test/*.js"
+    "test": "tape test/*.js"
   },
   "repository": {
     "type": "git",
