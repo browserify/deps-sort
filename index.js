@@ -24,9 +24,12 @@ module.exports = function (opts) {
             var index = {};
             var offset = 0;
             rows.forEach(function (row, ix) {
-                if (expose[row.id]) {
+                if (has(expose, row.id)) {
                     row.index = row.id;
                     offset ++;
+                    if (expose[row.id] !== true) {
+                        index[expose[row.id]] = row.index;
+                    }
                 }
                 else {
                     row.index = ix + 1 - offset;
@@ -48,8 +51,12 @@ module.exports = function (opts) {
         }
         tr.push(null);
     }
-    
-    function cmp (a, b) {
-        return a.id + a.hash < b.id + b.hash ? -1 : 1;
-    }
 };
+
+function cmp (a, b) {
+    return a.id + a.hash < b.id + b.hash ? -1 : 1;
+}
+
+function has (obj, key) {
+    return Object.prototype.hasOwnProperty.call(obj, key);
+}

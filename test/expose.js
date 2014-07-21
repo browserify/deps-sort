@@ -2,7 +2,7 @@ var sort = require('../');
 var test = require('tape');
 var through = require('through2');
 
-test('expose', function (t) {
+test('expose true', function (t) {
     t.plan(1);
     var s = sort({ index: true, expose: [ '/foo.js', '/bar.js' ] });
     var rows = [];
