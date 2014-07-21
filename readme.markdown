@@ -65,6 +65,9 @@ strings to row indices
 with integer indexes when `opts.index` is turned on. If `opts.expose` maps names
 to strings, those strings will be used to resolve the indexed references.
 
+* `opts.dedupe` - set `row.dedupe` for files that match existing contents. Sets
+`row.dedupeIndex` when `opts.index` is enabled.
+
 # install
 
 With [npm](https://npmjs.org) do:
