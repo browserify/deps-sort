@@ -9,8 +9,8 @@ test('dedupe', function (t) {
     function write (row, enc, next) { rows.push(row); next() }
     function end () {
         t.deepEqual(rows, [
-            { id: '/bar.js', deps: {}, source: 'TWO', dedupe: 1 },
-            { id: '/foo.js', deps: {}, source: 'TWO', dedupe: 1 },
+            { id: '/bar.js', deps: {}, source: 'TWO' },
+            { id: '/foo.js', deps: {}, source: 'TWO', dedupe: '/bar.js' },
             { id: '/main.js', deps: {
                 './foo': '/foo.js',
                 './bar': '/bar.js'

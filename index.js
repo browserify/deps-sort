@@ -25,21 +25,15 @@ function sorter (rows, tr, opts) {
         }, {});
     }
     
-    var dedupeIndex = 0, hashes = {}, hmap = {};
+    var hashes = {};
     if (opts.dedupe) {
         rows.forEach(function (row, ix) {
             var h = shasum(row.source);
-            if (hashes[h] === true) {
-                hashes[h] = ++ dedupeIndex;
-                rows[hmap[h]].dedupe = hashes[h];
-                row.dedupe = hashes[h];
-            }
-            else if (hashes[h]) {
+            if (hashes[h]) {
                 row.dedupe = hashes[h];
             }
             else {
-                hashes[h] = true;
-                hmap[h] = ix;
+                hashes[h] = row.id;
             }
         });
     }
@@ -65,6 +59,9 @@ function sorter (rows, tr, opts) {
             Object.keys(row.deps).forEach(function (key) {
                 row.indexDeps[key] = index[row.deps[key]];
             });
+            if (row.dedupe) {
+                row.dedupeIndex = index[row.dedupe];
+            }
             tr.push(row);
         });
     }

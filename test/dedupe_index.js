@@ -13,7 +13,6 @@ test('dedupe index', function (t) {
                 id: '/bar.js',
                 deps: {},
                 source: 'TWO',
-                dedupe: 1,
                 index: 1,
                 indexDeps: {}
             },
@@ -21,9 +20,10 @@ test('dedupe index', function (t) {
                 id: '/foo.js',
                 deps: {},
                 source: 'TWO',
-                dedupe: 1,
+                dedupe: '/bar.js',
                 index: 2,
-                indexDeps: {}
+                indexDeps: {},
+                dedupeIndex: 1
             },
             {
                 id: '/main.js',
