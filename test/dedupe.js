@@ -11,14 +11,17 @@ test('dedupe', function (t) {
         t.deepEqual(rows, [
             { id: '/bar.js', deps: {}, source: 'TWO', dedupe: 1 },
             { id: '/foo.js', deps: {}, source: 'TWO', dedupe: 1 },
-            { id: '/main.js', deps: { './foo': '/foo.js' }, source: 'ONE' }
+            { id: '/main.js', deps: {
+                './foo': '/foo.js',
+                './bar': '/bar.js'
+            }, source: 'ONE' }
         ]);
     }
     s.pipe(through.obj(write, end));
     
     s.write({
         id: '/main.js',
-        deps: { './foo': '/foo.js', './bar.js': '/bar.js' },
+        deps: { './foo': '/foo.js', './bar': '/bar.js' },
         source: 'ONE'
     });
     s.write({

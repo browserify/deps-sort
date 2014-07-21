@@ -1,4 +1,5 @@
 var through = require('through2');
+var shasum = require('shasum');
 var isarray = require('isarray');
 
 module.exports = function (opts) {
@@ -45,7 +46,23 @@ module.exports = function (opts) {
             });
         }
         else {
-            rows.forEach(function (row) {
+            var dedupeIndex = 0, hashes = {}, hmap = {};
+            rows.forEach(function (row, ix) {
+                if (opts.dedupe) {
+                    var h = shasum(row.source);
+                    if (hashes[h] === true) {
+                        hashes[h] = ++ dedupeIndex;
+                        rows[hmap[h]].dedupe = hashes[h];
+                        row.dedupe = hashes[h];
+                    }
+                    else if (hashes[h]) {
+                        row.dedupe = hashes[h];
+                    }
+                    else {
+                        hashes[h] = true;
+                        hmap[h] = ix;
+                    }
+                }
                 tr.push(row);
             });
         }
