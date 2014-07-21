@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "JSONStream": "~0.8.4",
+    "isarray": "0.0.1",
     "minimist": "~0.2.0",
     "through2": "~0.5.1"
   },

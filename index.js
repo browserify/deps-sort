@@ -1,7 +1,15 @@
 var through = require('through2');
+var isarray = require('isarray');
 
 module.exports = function (opts) {
     if (!opts) opts = {};
+    var expose = opts.expose || {};
+    if (isarray(expose)) {
+        expose = expose.reduce(function (acc, key) {
+            acc[key] = true;
+            return acc;
+        }, {});
+    }
     
     var rows = [];
     return through.obj(write, end);
@@ -14,9 +22,16 @@ module.exports = function (opts) {
         
         if (opts.index) {
             var index = {};
+            var offset = 0;
             rows.forEach(function (row, ix) {
-                row.index = ix + 1;
-                index[row.id] = ix + 1;
+                if (expose[row.id]) {
+                    row.index = row.id;
+                    offset ++;
+                }
+                else {
+                    row.index = ix + 1 - offset;
+                }
+                index[row.id] = row.index;
             });
             rows.forEach(function (row) {
                 row.indexDeps = {};
