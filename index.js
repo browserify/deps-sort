@@ -27,7 +27,7 @@ function sorter (rows, tr, opts) {
     
     var hashes = {}, deduped = {};
     if (opts.dedupe) {
-        rows.forEach(function (row, ix) {
+        rows.forEach(function (row) {
             var h = shasum(row.source);
             if (hashes[h]) {
                 row.dedupe = hashes[h];
@@ -59,9 +59,6 @@ function sorter (rows, tr, opts) {
             row.indexDeps = {};
             Object.keys(row.deps).forEach(function (key) {
                 var id = row.deps[key];
-                if (has(deduped, id)) {
-                    id = deduped[id];
-                }
                 row.indexDeps[key] = index[id];
             });
             if (row.dedupe) {

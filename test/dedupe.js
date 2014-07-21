@@ -11,10 +11,11 @@ test('dedupe', function (t) {
         t.deepEqual(rows, [
             { id: '/bar.js', deps: {}, source: 'TWO' },
             { id: '/foo.js', deps: {}, source: 'TWO', dedupe: '/bar.js' },
-            { id: '/main.js', deps: {
-                './foo': '/foo.js',
-                './bar': '/bar.js'
-            }, source: 'ONE' }
+            {
+                id: '/main.js',
+                deps: { './foo': '/foo.js', './bar': '/bar.js' },
+                source: 'ONE'
+            }
         ]);
     }
     s.pipe(through.obj(write, end));

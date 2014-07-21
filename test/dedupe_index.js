@@ -30,7 +30,7 @@ test('dedupe index', function (t) {
                 deps: { './foo': '/foo.js', './bar': '/bar.js' },
                 source: 'ONE',
                 index: 3,
-                indexDeps: { './foo': 1, './bar': 1 },
+                indexDeps: { './foo': 2, './bar': 1 },
             }
         ]);
     }
