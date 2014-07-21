@@ -4,14 +4,6 @@ var isarray = require('isarray');
 
 module.exports = function (opts) {
     if (!opts) opts = {};
-    var expose = opts.expose || {};
-    if (isarray(expose)) {
-        expose = expose.reduce(function (acc, key) {
-            acc[key] = true;
-            return acc;
-        }, {});
-    }
-    
     var rows = [];
     return through.obj(write, end);
     
@@ -25,6 +17,33 @@ module.exports = function (opts) {
 };
 
 function sorter (rows, tr, opts) {
+    var expose = opts.expose || {};
+    if (isarray(expose)) {
+        expose = expose.reduce(function (acc, key) {
+            acc[key] = true;
+            return acc;
+        }, {});
+    }
+    
+    var dedupeIndex = 0, hashes = {}, hmap = {};
+    if (opts.dedupe) {
+        rows.forEach(function (row, ix) {
+            var h = shasum(row.source);
+            if (hashes[h] === true) {
+                hashes[h] = ++ dedupeIndex;
+                rows[hmap[h]].dedupe = hashes[h];
+                row.dedupe = hashes[h];
+            }
+            else if (hashes[h]) {
+                row.dedupe = hashes[h];
+            }
+            else {
+                hashes[h] = true;
+                hmap[h] = ix;
+            }
+        });
+    }
+    
     if (opts.index) {
         var index = {};
         var offset = 0;
@@ -50,25 +69,7 @@ function sorter (rows, tr, opts) {
         });
     }
     else {
-        var dedupeIndex = 0, hashes = {}, hmap = {};
-        rows.forEach(function (row, ix) {
-            if (opts.dedupe) {
-                var h = shasum(row.source);
-                if (hashes[h] === true) {
-                    hashes[h] = ++ dedupeIndex;
-                    rows[hmap[h]].dedupe = hashes[h];
-                    row.dedupe = hashes[h];
-                }
-                else if (hashes[h]) {
-                    row.dedupe = hashes[h];
-                }
-                else {
-                    hashes[h] = true;
-                    hmap[h] = ix;
-                }
-            }
-            tr.push(row);
-        });
+        rows.forEach(function (row) { tr.push(row) });
     }
     tr.push(null);
 };

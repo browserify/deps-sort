@@ -9,9 +9,29 @@ test('dedupe index', function (t) {
     function write (row, enc, next) { rows.push(row); next() }
     function end () {
         t.deepEqual(rows, [
-            { id: 1, deps: {}, source: 'TWO', dedupe: 1 },
-            { id: 2, deps: {}, source: 'TWO', dedupe: 1 },
-            { id: 3, deps: { './foo': 1, './bar': 2 }, source: 'ONE' }
+            {
+                id: '/bar.js',
+                deps: {},
+                source: 'TWO',
+                dedupe: 1,
+                index: 1,
+                indexDeps: {}
+            },
+            {
+                id: '/foo.js',
+                deps: {},
+                source: 'TWO',
+                dedupe: 1,
+                index: 2,
+                indexDeps: {}
+            },
+            {
+                id: '/main.js',
+                deps: { './foo': '/foo.js', './bar': '/bar.js' },
+                source: 'ONE',
+                index: 3,
+                indexDeps: { './foo': 2, './bar': 1 },
+            }
         ]);
     }
     s.pipe(through.obj(write, end));
