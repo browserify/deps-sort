@@ -25,12 +25,13 @@ function sorter (rows, tr, opts) {
         }, {});
     }
     
-    var hashes = {};
+    var hashes = {}, deduped = {};
     if (opts.dedupe) {
         rows.forEach(function (row, ix) {
             var h = shasum(row.source);
             if (hashes[h]) {
                 row.dedupe = hashes[h];
+                deduped[row.id] = hashes[h];
             }
             else {
                 hashes[h] = row.id;
@@ -57,7 +58,11 @@ function sorter (rows, tr, opts) {
         rows.forEach(function (row) {
             row.indexDeps = {};
             Object.keys(row.deps).forEach(function (key) {
-                row.indexDeps[key] = index[row.deps[key]];
+                var id = row.deps[key];
+                if (has(deduped, id)) {
+                    id = deduped[id];
+                }
+                row.indexDeps[key] = index[id];
             });
             if (row.dedupe) {
                 row.dedupeIndex = index[row.dedupe];
