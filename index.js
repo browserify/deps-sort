@@ -20,54 +20,57 @@ module.exports = function (opts) {
     function end () {
         var tr = this;
         rows.sort(cmp);
-        
-        if (opts.index) {
-            var index = {};
-            var offset = 0;
-            rows.forEach(function (row, ix) {
-                if (has(expose, row.id)) {
-                    row.index = row.id;
-                    offset ++;
-                    if (expose[row.id] !== true) {
-                        index[expose[row.id]] = row.index;
-                    }
+        sorter(rows, tr, opts);
+    }
+};
+
+function sorter (rows, tr, opts) {
+    if (opts.index) {
+        var index = {};
+        var offset = 0;
+        rows.forEach(function (row, ix) {
+            if (has(expose, row.id)) {
+                row.index = row.id;
+                offset ++;
+                if (expose[row.id] !== true) {
+                    index[expose[row.id]] = row.index;
+                }
+            }
+            else {
+                row.index = ix + 1 - offset;
+            }
+            index[row.id] = row.index;
+        });
+        rows.forEach(function (row) {
+            row.indexDeps = {};
+            Object.keys(row.deps).forEach(function (key) {
+                row.indexDeps[key] = index[row.deps[key]];
+            });
+            tr.push(row);
+        });
+    }
+    else {
+        var dedupeIndex = 0, hashes = {}, hmap = {};
+        rows.forEach(function (row, ix) {
+            if (opts.dedupe) {
+                var h = shasum(row.source);
+                if (hashes[h] === true) {
+                    hashes[h] = ++ dedupeIndex;
+                    rows[hmap[h]].dedupe = hashes[h];
+                    row.dedupe = hashes[h];
+                }
+                else if (hashes[h]) {
+                    row.dedupe = hashes[h];
                 }
                 else {
-                    row.index = ix + 1 - offset;
+                    hashes[h] = true;
+                    hmap[h] = ix;
                 }
-                index[row.id] = row.index;
-            });
-            rows.forEach(function (row) {
-                row.indexDeps = {};
-                Object.keys(row.deps).forEach(function (key) {
-                    row.indexDeps[key] = index[row.deps[key]];
-                });
-                tr.push(row);
-            });
-        }
-        else {
-            var dedupeIndex = 0, hashes = {}, hmap = {};
-            rows.forEach(function (row, ix) {
-                if (opts.dedupe) {
-                    var h = shasum(row.source);
-                    if (hashes[h] === true) {
-                        hashes[h] = ++ dedupeIndex;
-                        rows[hmap[h]].dedupe = hashes[h];
-                        row.dedupe = hashes[h];
-                    }
-                    else if (hashes[h]) {
-                        row.dedupe = hashes[h];
-                    }
-                    else {
-                        hashes[h] = true;
-                        hmap[h] = ix;
-                    }
-                }
-                tr.push(row);
-            });
-        }
-        tr.push(null);
+            }
+            tr.push(row);
+        });
     }
+    tr.push(null);
 };
 
 function cmp (a, b) {
