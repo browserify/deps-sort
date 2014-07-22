@@ -106,7 +106,7 @@ function depCmp (hashes) {
             var db = deps[kb];
 
             if (ka === kb) continue;
-            if (ha !== hb || (!limit && !sameDeps(da, db, 1))) {
+            if (ha !== hb || (!limit && !cmp(da, db, 1))) {
                 return false;
             }
         }
