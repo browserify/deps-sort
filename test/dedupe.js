@@ -10,7 +10,7 @@ test('dedupe', function (t) {
     function end () {
         t.deepEqual(rows, [
             { id: '/bar.js', deps: {}, source: 'TWO' },
-            { id: '/foo.js', deps: {}, source: 'TWO', dedupe: '/bar.js' },
+            { id: '/foo.js', deps: {}, source: 'TWO', dedupe: '/bar.js', sameDeps: true },
             {
                 id: '/main.js',
                 deps: { './foo': '/foo.js', './bar': '/bar.js' },

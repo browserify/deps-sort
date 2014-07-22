@@ -26,15 +26,20 @@ function sorter (rows, tr, opts) {
     }
     
     var hashes = {}, deduped = {};
+    var sameDeps = depCmp();
+    
     if (opts.dedupe) {
         rows.forEach(function (row) {
             var h = shasum(row.source);
+            sameDeps.add(row, h);
+            
             if (hashes[h]) {
-                row.dedupe = hashes[h];
-                deduped[row.id] = hashes[h];
+                row.dedupe = hashes[h].id;
+                row.sameDeps = sameDeps.cmp(row.deps, hashes[h].deps);
+                deduped[row.id] = hashes[h].id;
             }
             else {
-                hashes[h] = row.id;
+                hashes[h] = row;
             }
         });
     }
@@ -79,4 +84,32 @@ function cmp (a, b) {
 
 function has (obj, key) {
     return Object.prototype.hasOwnProperty.call(obj, key);
+}
+
+function depCmp (hashes) {
+    var deps = {}, hashes = {};
+    return { add: add, cmp: cmp }
+    
+    function add (row, hash) {
+        deps[row.id] = row.deps;
+        hashes[row.id] = hash;
+    }
+    function cmp (a, b, limit) {
+        var keys = Object.keys(a);
+        if (keys.length !== Object.keys(b).length) return false;
+
+        for (var i = 0; i < keys.length; i++) {
+            var k = keys[i], ka = a[k], kb = b[k];
+            var ha = hashes[ka];
+            var hb = hashes[kb];
+            var da = deps[ka];
+            var db = deps[kb];
+
+            if (ka === kb) continue;
+            if (ha !== hb || (!limit && !sameDeps(da, db, 1))) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

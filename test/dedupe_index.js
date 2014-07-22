@@ -23,7 +23,8 @@ test('dedupe index', function (t) {
                 dedupe: '/bar.js',
                 index: 2,
                 indexDeps: {},
-                dedupeIndex: 1
+                dedupeIndex: 1,
+                sameDeps: true
             },
             {
                 id: '/main.js',
