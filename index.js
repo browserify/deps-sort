@@ -64,9 +64,7 @@ function sorter (rows, tr, opts) {
             row.indexDeps = {};
             Object.keys(row.deps).forEach(function (key) {
                 var id = row.deps[key];
-                if (has(index, id)) {
-                    row.indexDeps[key] = index[id];
-                }
+                row.indexDeps[key] = index[id];
             });
             if (row.dedupe) {
                 row.dedupeIndex = index[row.dedupe];
