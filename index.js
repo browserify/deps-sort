@@ -95,6 +95,10 @@ function depCmp (hashes) {
         hashes[row.id] = hash;
     }
     function cmp (a, b, limit) {
+        if(!a || !b) {
+            return false;
+        }
+        
         var keys = Object.keys(a);
         if (keys.length !== Object.keys(b).length) return false;
 
