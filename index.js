@@ -32,14 +32,19 @@ function sorter (rows, tr, opts) {
         rows.forEach(function (row) {
             var h = shasum(row.source);
             sameDeps.add(row, h);
-            
             if (hashes[h]) {
-                row.dedupe = hashes[h].id;
-                row.sameDeps = sameDeps.cmp(row.deps, hashes[h].deps);
-                deduped[row.id] = hashes[h].id;
+                hashes[h].push(row);
+            } else {
+                hashes[h] = [row];
             }
-            else {
-                hashes[h] = row;
+        });
+        Object.keys(hashes).forEach(function (h) {
+            var rows = hashes[h];
+            while (rows.length > 1) {
+                var row = rows.pop();
+                row.dedupe = rows[0].id;
+                row.sameDeps = sameDeps.cmp(rows[0].deps, row.deps);
+                deduped[row.id] = rows[0].id;
             }
         });
     }
