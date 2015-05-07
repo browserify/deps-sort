@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "isarray": "0.0.1",
-    "jsonstream": "^1.0.3",
+    "jsonstream2": "^1.0.3",
     "shasum": "^1.0.0",
     "subarg": "^1.0.0",
     "through2": "~0.5.1"
