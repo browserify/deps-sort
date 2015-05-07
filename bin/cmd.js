@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 var argv = require('subarg')(process.argv.slice(2));
-var JSONStream = require('jsonstream');
+var JSONStream = require('jsonstream2');
 
 var sort = require('../')(argv);
 var parse = JSONStream.parse([ true ]);
