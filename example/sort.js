@@ -1,5 +1,5 @@
 var sort = require('../')();
-var JSONStream = require('jsonstream');
+var JSONStream = require('JSONStream');
 var parse = JSONStream.parse([ true ]);
 var stringify = JSONStream.stringify();
 
