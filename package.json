@@ -7,8 +7,8 @@
     "deps-sort": "bin/cmd.js"
   },
   "dependencies": {
-    "JSONStream": "~0.10.0",
     "isarray": "0.0.1",
+    "jsonstream": "^1.0.3",
     "shasum": "^1.0.0",
     "subarg": "^1.0.0",
     "through2": "~0.5.1"
