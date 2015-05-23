@@ -11,7 +11,7 @@
     "isarray": "0.0.1",
     "shasum": "^1.0.0",
     "subarg": "^1.0.0",
-    "through2": "~0.5.1"
+    "through2": "^1.0.0"
   },
   "devDependencies": {
     "tap": "^1.1.0"
