@@ -1,6 +1,5 @@
 var through = require('through2');
 var shasum = require('shasum');
-var isarray = require('isarray');
 
 module.exports = function (opts) {
     if (!opts) opts = {};
@@ -18,7 +17,7 @@ module.exports = function (opts) {
 
 function sorter (rows, tr, opts) {
     var expose = opts.expose || {};
-    if (isarray(expose)) {
+    if (Array.isArray(expose)) {
         expose = expose.reduce(function (acc, key) {
             acc[key] = true;
             return acc;
