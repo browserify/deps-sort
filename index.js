@@ -80,7 +80,7 @@ function sorter (rows, tr, opts) {
         rows.forEach(function (row) { tr.push(row) });
     }
     tr.push(null);
-};
+}
 
 function cmp (a, b) {
     return a.id + a.hash < b.id + b.hash ? -1 : 1;
@@ -90,7 +90,7 @@ function has (obj, key) {
     return Object.prototype.hasOwnProperty.call(obj, key);
 }
 
-function depCmp (hashes) {
+function depCmp () {
     var deps = {}, hashes = {};
     return { add: add, cmp: cmp }
     
