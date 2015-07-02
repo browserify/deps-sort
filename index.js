@@ -27,16 +27,19 @@ function sorter (rows, tr, opts) {
     var hashes = {}, deduped = {};
     var sameDeps = depCmp();
     
+    rows.forEach(function (row) {
+        if (!row.source) {
+            return;
+        }
+        var h = shasum(row.source);
+        sameDeps.add(row, h);
+        if (hashes[h]) {
+            hashes[h].push(row);
+        } else {
+            hashes[h] = [row];
+        }
+    });
     if (opts.dedupe) {
-        rows.forEach(function (row) {
-            var h = shasum(row.source);
-            sameDeps.add(row, h);
-            if (hashes[h]) {
-                hashes[h].push(row);
-            } else {
-                hashes[h] = [row];
-            }
-        });
         Object.keys(hashes).forEach(function (h) {
             var rows = hashes[h];
             while (rows.length > 1) {
@@ -60,7 +63,7 @@ function sorter (rows, tr, opts) {
                 }
             }
             else {
-                row.index = ix + 1 - offset;
+                row.index = getIndex(opts.index, row, hashes, ix + 1 - offset);
             }
             index[row.id] = row.index;
         });
@@ -119,4 +122,15 @@ function depCmp () {
         }
         return true;
     }
+}
+
+function getIndex(type, row, hashes, fallback) {
+    if (type === 'sha1') {
+        for (var h in hashes) {
+            if (hashes.hasOwnProperty(h) && hashes[h].indexOf(row) > -1) {
+                return h.slice(0, 7);
+            }
+        }
+    }
+    return fallback;
 }
