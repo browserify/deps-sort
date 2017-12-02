@@ -3,7 +3,7 @@
 sort [module-deps](https://npmjs.org/package/module-deps) output for deterministic
 browserify bundles
 
-[![build status](https://secure.travis-ci.org/substack/deps-sort.png)](http://travis-ci.org/substack/deps-sort)
+[![build status](https://secure.travis-ci.org/browserify/deps-sort.png)](http://travis-ci.org/browserify/deps-sort)
 
 # example
 
