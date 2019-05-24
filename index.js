@@ -2,7 +2,9 @@ var through = require('through2');
 var crypto = require('crypto');
 
 function shasum (text) {
-    return crypto.createHash('sha1').update(text).digest('hex');
+    return crypto.createHash('sha1')
+        .update(text, Buffer.isBuffer(text) ? null : 'utf8')
+        .digest('hex');
 }
 
 module.exports = function (opts) {
