@@ -1,5 +1,9 @@
 var through = require('through2');
-var shasum = require('shasum');
+var crypto = require('crypto');
+
+function shasum (text) {
+    return crypto.createHash('sha1').update(text).digest('hex');
+}
 
 module.exports = function (opts) {
     if (!opts) opts = {};
